@@ -1,0 +1,11 @@
+%html
+  %head
+    %title= @title
+    %meta{:name => :author, :content => @author}
+    %link{:rel => :stylesheet, :href => 'style.css', :type => 'text/css', :media => :screen}
+    %link{:rel => :stylesheet, :href => 's6/shared/outline.css', :type => 'text/css', :media => :screen}
+    %link{:rel => :stylesheet, :href => 's6/shared/print.css', :type => 'text/css', :media => :print}
+  %body
+    whoa
+
+    = yield
