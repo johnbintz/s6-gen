@@ -4,13 +4,13 @@ require 'fileutils'
 require 'sass'
 
 module S6Gen
-  class RakeHelper
-    def self.all!
-      self.html!
-      self.css!
+  module RakeHelper
+    def all!
+      html!
+      css!
     end
 
-    def self.html!
+    def html!
       raise "No src/index.haml file found!" if !File.exist?('src/index.haml')
 
       FileUtils.mkdir_p 'public'
@@ -21,7 +21,7 @@ module S6Gen
       end
     end
 
-    def self.css!
+    def css!
       raise "No src/style.sass file found!" if !File.exist?('src/style.sass')
 
       FileUtils.mkdir_p 'public'
@@ -33,15 +33,17 @@ module S6Gen
   end
 end
 
+include S6Gen::RakeHelper
+
 namespace :s6 do
   desc "Regenerate presentation index.html file"
   task :regenerate_html do
-    S6Gen::RakeHelper.html!
+    html!
   end
 
   desc "Regenerate style.css"
   task :regenerate_css do
-    S6Gen::RakeHelper.css!
+    css!
   end
 
   desc "Regenerate everything"
@@ -56,7 +58,7 @@ namespace :s6 do
     watcher.add_observer do |*args|
       args.each { |e| puts e }
 
-      S6Gen::RakeHelper.all!
+      all!
     end
 
     puts ">> S6-Gen is watching for changes, press Enter to quit"

@@ -6,5 +6,7 @@ namespace :s6 do
   task :install do
     FileUtils.mkdir_p 'public'
     FileUtils.cp_r File.join(S6Gen::ROOT, 's6'), 'public'
+    FileUtils.cp_r File.join(S6Gen::ROOT, 'jquery'), 'public'
+    FileUtils.rm_rf 'public/s6/.git'
   end
 end
