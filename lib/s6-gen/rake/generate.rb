@@ -1,6 +1,7 @@
 require 's6-gen'
 require 's6-gen/presentation'
 require 'fileutils'
+require 'compass'
 require 'sass'
 
 module S6Gen
@@ -26,8 +27,18 @@ module S6Gen
 
       FileUtils.mkdir_p 'public'
 
+      Compass.configuration do |config|
+        config.project_path = Dir.pwd
+        config.sass_dir = 'src'
+
+        config.images_dir = File.join('public', 'graphics')
+        config.http_path = ""
+        config.http_images_path = 'graphics'
+        config.output_style = :compact
+      end
+
       File.open('public/style.css', 'w') do |file|
-        file.puts Sass::Engine.new(File.read('src/style.sass')).to_css
+        file.puts Sass::Engine.new(File.read('src/style.sass'), Compass.sass_engine_options).to_css
       end
     end
   end
