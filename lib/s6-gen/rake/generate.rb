@@ -1,50 +1,9 @@
-require 's6-gen'
-require 's6-gen/presentation'
 require 'fileutils'
-require 'compass'
-require 'sass'
 
-module S6Gen
-  module RakeHelper
-    def all!
-      html!
-      css!
-    end
+include S6Gen::Generator
 
-    def html!
-      raise "No src/index.haml file found!" if !File.exist?('src/index.haml')
-
-      FileUtils.mkdir_p 'public'
-
-      layout = File.exist?('src/layout.haml') ? 'src/layout.haml' : File.join(S6Gen::ROOT, 'templates/layout.haml')
-      File.open('public/index.html', 'w') do |file|
-        file.puts Haml::Engine.new(File.read(layout)).to_html(self) { S6Gen::Presentation.render('index.haml', 'src') }
-      end
-    end
-
-    def css!
-      raise "No src/style.sass file found!" if !File.exist?('src/style.sass')
-
-      FileUtils.mkdir_p 'public'
-
-      Compass.configuration do |config|
-        config.project_path = Dir.pwd
-        config.sass_dir = 'src'
-
-        config.images_dir = File.join('public', 'graphics')
-        config.http_path = ""
-        config.http_images_path = 'graphics'
-        config.output_style = :compact
-      end
-
-      File.open('public/style.css', 'w') do |file|
-        file.puts Sass::Engine.new(File.read('src/style.sass'), Compass.sass_engine_options).to_css
-      end
-    end
-  end
-end
-
-include S6Gen::RakeHelper
+@source_dir ||= 'src'
+@target_dir ||= 'public'
 
 namespace :s6 do
   desc "Regenerate presentation index.html file"
@@ -64,7 +23,7 @@ namespace :s6 do
   task :watch do
     require 'directory_watcher'
 
-    watcher = DirectoryWatcher.new 'src', :pre_load => true
+    watcher = DirectoryWatcher.new @source_dir, :pre_load => true
     watcher.interval = 1
     watcher.add_observer do |*args|
       args.each { |e| puts e }

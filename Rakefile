@@ -7,7 +7,7 @@ begin
     s.email = "john@coswellproductions.com"
     s.homepage = "http://github.com/johnbintz/s6-gen"
     s.description = "Create new S6 presenations using Haml"
-    s.authors = ["JJohn Bintz"]
+    s.authors = ["John Bintz"]
     s.files =  FileList["[A-Z]*", "{bin,generators,lib,test}/**/*"]
     s.add_dependency 'haml'
   end

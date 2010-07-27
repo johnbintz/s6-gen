@@ -11,19 +11,21 @@
     %script{:src => 'jquery/jquery-ui-1.7.2.effects.min.js', :type => 'text/javascript'}
     %script{:src => 's6/shared/slides.core.js', :type => 'text/javascript'}
     %script{:src => 's6/shared/slides.js', :type => 'text/javascript'}
+
     :javascript
-      $(function() {
-        var center;
-        center = function() {
-          setTimeout(function() {
-            $('.center').each(function() {
-              $(this).css('left', ($(window).width() - $(this).width()) / 2);
-            });
-            center();
-          }, 50);
-        };
-        center();
-      });
+      function updatePermaLink() {
+        $('#plink').get(0).href = window.location.pathname + '#slide' + snum;
+
+        var padding = 20;
+
+        var availableWidth = $(window).width() - padding;
+        var availableHeight = $('.presentation > .slide:visible').height() - padding;
+
+        $('.center').each(function() {
+          $(this).css('left', (availableWidth - $(this).width()) / 2);
+          $(this).css('top', (availableHeight - $(this).height()) / 2);
+        });
+      }
   %body
     .layout
       .background
